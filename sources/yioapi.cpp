@@ -426,11 +426,15 @@ void YioAPI::processMessage(QString message) {
             if (map.contains("integrationId")) {
                 QString integrationId = map["integrationId"].toString();
                 qCDebug(m_log) << "Request for getEntities" << integrationId;
-
                 QStringList entitiesList;
-                entitiesList.append("light.livingroom");
-                entitiesList.append("light.kitchen");
-                entitiesList.append("blind.livingroom");
+
+                if (integrationId == "homeassistant") {
+                    entitiesList.append("light.livingroom");
+                    entitiesList.append("light.kitchen");
+                    entitiesList.append("blind.livingroom");
+                } else if (integrationId == "spotify") {
+                    entitiesList.append("spotify.spotify");
+                }
 
                 response.insert("success", true);
                 response.insert("type", "entities");
