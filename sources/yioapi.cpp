@@ -427,29 +427,14 @@ void YioAPI::processMessage(QString message) {
                 QString integrationId = map["integrationId"].toString();
                 qCDebug(m_log) << "Request for getEntities" << integrationId;
 
-                QObject *o = m_integrations->get(integrationId);
+                QStringList entitiesList;
+                entitiesList.append("light.livingroom");
+                entitiesList.append("light.kitchen");
+                entitiesList.append("blind.livingroom");
 
-                if (o) {
-                    IntegrationInterface *i = qobject_cast<IntegrationInterface *>(o);
-                    if (i) {
-                        QStringList entitiesList = i->getAllAvailableEntities();
-
-                        if (entitiesList.length() > 1) {
-                            response.insert("success", true);
-                            response.insert("type", "entities");
-                            response.insert("entities", entitiesList);
-                        } else {
-                            response.insert("success", false);
-                            response.insert("type", "entities");
-                        }
-                    }
-                } else {
-                    response.insert("success", false);
-                    response.insert("type", "entities");
-                }
-            } else {
-                response.insert("success", false);
+                response.insert("success", true);
                 response.insert("type", "entities");
+                response.insert("entities", entitiesList);
             }
 
             QJsonDocument json = QJsonDocument::fromVariant(response);
